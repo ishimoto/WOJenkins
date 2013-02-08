@@ -4,14 +4,8 @@ WOPROJECT="woproject.jar"
 JOB_ROOT="${WORKSPACE}/../.."
 FRAMEWORKS_REPOSITORY="${JENKINS_HOME}/WOFrameworksRepository"
 
-echo "WO Version: ${WO_VERSION}"
-
-if [ "$WO_VERSION" == "" ]; then
-	echo "You must provide a WO_VERSION."
-	exit 1
-elif [ "$WO_VERSION" == "5.4.3" ]; then
-	WO_ALT_VERSION="54"
-fi
+# WE ONLY SUPPORT WO 5.4.3
+WO_ALT_VERSION="54"
 
 #
 # Configure the environment based on the platform information.
@@ -70,7 +64,7 @@ fi
 
 # Create variables for the build's WO_SYSTEM_ROOT and WO_LOCAL_ROOT
 WO_SYSTEM_ROOT_FOR_THIS_BUILD="${ROOT}${SYSTEM_PATH_PREFIX}"
- WO_LCOAL_ROOT_FOR_THIS_BUILD="${ROOT}${LOCAL_PATH_PREFIX}"
+WO_LOCAL_ROOT_FOR_THIS_BUILD="${ROOT}${LOCAL_PATH_PREFIX}"
 
 # Since we are only setting up the workspace for building Project WOnder,
 # we can simply link to the System and Local Library directories instead
@@ -82,16 +76,22 @@ WO_SYSTEM_ROOT_FOR_THIS_BUILD="${ROOT}${SYSTEM_PATH_PREFIX}"
    WEBOBJECTS_LIBRARY_IN_FRAMEWORKS_REPOSITORY="${WEBOBJECTS_ROOT_IN_FRAMEWORKS_REPOSITORY}/Library"
 		  WONDER_ROOT_IN_FRAMEWORKS_REPOSITORY="${FRAMEWORKS_REPOSITORY}/ProjectWOnder/${WONDER_BRANCH}/${WO_VERSION}"
 	   WONDER_LIBRARY_IN_FRAMEWORKS_REPOSITORY="${WONDER_ROOT_IN_FRAMEWORKS_REPOSITORY}/Library"
+		   WODKA_ROOT_IN_FRAMEWORKS_REPOSITORY="${FRAMEWORKS_REPOSITORY}/WOdkaLAB"
+	    WODKA_LIBRARY_IN_FRAMEWORKS_REPOSITORY="${WODKA_ROOT_IN_FRAMEWORKS_REPOSITORY}/Library"
 
 # Make sure the Workspace Libraries folder exists
 mkdir -p ${WORKSPACE}/Libraries
 
 # Setup Root
 rm -rf ${ROOT}
-echo "mkdir -p ${WO_LCOAL_ROOT_FOR_THIS_BUILD}"
+echo "mkdir -p ${WO_LOCAL_ROOT_FOR_THIS_BUILD}"
 mkdir -p ${WO_LOCAL_ROOT_FOR_THIS_BUILD}
 echo "mkdir -p ${WO_SYSTEM_ROOT_FOR_THIS_BUILD}"
 mkdir -p ${WO_SYSTEM_ROOT_FOR_THIS_BUILD}
+
+
+
+# ---- Part 1
 
 # Setup link to WebObjects Frameworks
 # We are using symlinks instead of copying the Frameworks
