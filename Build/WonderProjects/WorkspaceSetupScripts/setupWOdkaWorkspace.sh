@@ -157,9 +157,12 @@ PROJECTS=`ls ${WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/`
 # Step through them to get the list of WO frameworks on their Classpath.
 for PROJECT in $PROJECTS; do
 	echo "processing ${PROJECT} :"
+	
+	FRAMEWORK_NAME_IN_WONDER_INSTALL = "${WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/${PROJECT}"
 
-
-
+	echo "        Linking: ln -sfn ${FRAMEWORK_NAME_IN_WONDER_INSTALL}"
+	echo "                         ${WODKA_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}"
+	ln -sfn ${FRAMEWORK_NAME_IN_WONDER_INSTALL} ${WODKA_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}
 
 
 
