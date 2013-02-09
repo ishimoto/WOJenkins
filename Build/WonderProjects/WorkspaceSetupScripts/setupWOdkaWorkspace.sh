@@ -152,9 +152,10 @@ fi
 
 
 
+#WO_SYSTEM_FRAMEWORKS_FOR_THIS_BUILD="${WO_SYSTEM_ROOT_FOR_THIS_BUILD}/Library/Frameworks"
 
 
-#mkdir -p ${WO_SYSTEM_ROOT_FOR_THIS_BUILD}
+mkdir -p "${WO_SYSTEM_ROOT_FOR_THIS_BUILD}/Library"
 
 
 
@@ -162,7 +163,7 @@ fi
 
 
 ##### /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root/System/Library/Frameworks
-mkdir -p ${WO_SYSTEM_FRAMEWORKS_FOR_THIS_BUILD}
+#mkdir -p ${WO_SYSTEM_FRAMEWORKS_FOR_THIS_BUILD}
 
 ##### from = /Users/Shared/Jenkins/Home/WOFrameworksRepository/WebObjects/5.4.3/System/Library/Frameworks
 ##### to = /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root/System/Library/Frameworks
