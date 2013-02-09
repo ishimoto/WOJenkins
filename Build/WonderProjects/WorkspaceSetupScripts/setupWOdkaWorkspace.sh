@@ -128,7 +128,18 @@ fi
 # Link to the Frameworks that are on the classpath of this project.
 # (This does not copy the frameworks, it just links to them so it is very fast)
 
-# Setup Directories for System and Local Frameworks
+# Setup Directories for System
+mkdir -p "${WO_SYSTEM_ROOT_FOR_THIS_BUILD}/Library"
+ln -sfn ${WEBOBJECTS_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY} ${WO_SYSTEM_FRAMEWORKS_FOR_THIS_BUILD}
+
+# Setup Directories for Local Frameworks
+mkdir -p "${WO_LOCAL_ROOT_FOR_THIS_BUILD}/Library"
+ln -sfn ${WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY} ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}
+
+##### /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root/Library/WebObjects/Extensions
+mkdir -p ${WO_EXTENSIONS_FOR_THIS_BUILD}
+
+
 
 
 
@@ -147,43 +158,6 @@ fi
 #WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD = /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root/Library/Frameworks
 #WO_EXTENSIONS_FOR_THIS_BUILD = /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root/Library/WebObjects/Extensions
 #WO_APPS_ROOT_FOR_THIS_BUILD = /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root/Library/WebObjects/Applications
-
-
-
-
-
-#WO_SYSTEM_FRAMEWORKS_FOR_THIS_BUILD="${WO_SYSTEM_ROOT_FOR_THIS_BUILD}/Library/Frameworks"
-
-
-mkdir -p "${WO_SYSTEM_ROOT_FOR_THIS_BUILD}/Library"
-
-
-
-
-
-
-##### /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root/System/Library/Frameworks
-#mkdir -p ${WO_SYSTEM_FRAMEWORKS_FOR_THIS_BUILD}
-
-##### from = /Users/Shared/Jenkins/Home/WOFrameworksRepository/WebObjects/5.4.3/System/Library/Frameworks
-##### to = /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root/System/Library/Frameworks
-ln -sfn ${WEBOBJECTS_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY} ${WO_SYSTEM_FRAMEWORKS_FOR_THIS_BUILD}
-
-
-
-#WEBOBJECTS_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY = /Users/Shared/Jenkins/Home/WOFrameworksRepository/WebObjects/5.4.3/System/Library/Frameworks
-
-
-
-##### /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root/Library/Frameworks
-mkdir -p ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}
-##### /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root/Library/WebObjects/Extensions
-mkdir -p ${WO_EXTENSIONS_FOR_THIS_BUILD}
-
-
-
-
-
 
 
 
