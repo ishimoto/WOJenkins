@@ -97,38 +97,6 @@ mkdir -p ${WORKSPACE}/Libraries
 # Cleanout the Root directory of the project from the last build
 rm -rf ${ROOT}
 
-
-echo "WEBOBJECTS_ROOT_IN_FRAMEWORKS_REPOSITORY = ${WEBOBJECTS_ROOT_IN_FRAMEWORKS_REPOSITORY}"
-echo "WO_JAVA_APPS_ROOT_IN_FRAMEWORKS_REPOSITORY = ${WO_JAVA_APPS_ROOT_IN_FRAMEWORKS_REPOSITORY}"
-echo "WOTASKD_IN_FRAMEWORKS_REPOSITORY = ${WOTASKD_IN_FRAMEWORKS_REPOSITORY}"
-echo "WEBOBJECTS_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY = ${WEBOBJECTS_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}"
-echo "WONDER_ROOT_IN_FRAMEWORKS_REPOSITORY = ${WONDER_ROOT_IN_FRAMEWORKS_REPOSITORY}"
-echo "WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY = ${WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}"
-echo "WO_SYSTEM_ROOT_FOR_THIS_BUILD = ${WO_SYSTEM_ROOT_FOR_THIS_BUILD}"
-echo "WO_SYSTEM_FRAMEWORKS_FOR_THIS_BUILD = ${WO_SYSTEM_FRAMEWORKS_FOR_THIS_BUILD}"
-echo "WO_JAVA_APPS_ROOT_FOR_THIS_BUILD = ${WO_JAVA_APPS_ROOT_FOR_THIS_BUILD}"
-echo "WO_BOOTSTRAP_JAR_FOR_THIS_BUILD = ${WO_BOOTSTRAP_JAR_FOR_THIS_BUILD}"
-echo "WO_LOCAL_ROOT_FOR_THIS_BUILD = ${WO_LOCAL_ROOT_FOR_THIS_BUILD}"
-echo "WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD = ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}"
-echo "WO_EXTENSIONS_FOR_THIS_BUILD = ${WO_EXTENSIONS_FOR_THIS_BUILD}"
-echo "WO_APPS_ROOT_FOR_THIS_BUILD = ${WO_APPS_ROOT_FOR_THIS_BUILD}"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Look for and link to the WOBootstrap.jar
 echo " "
 echo "Look for: ${WOTASKD_IN_FRAMEWORKS_REPOSITORY}"
@@ -160,130 +128,66 @@ fi
 # Link to the Frameworks that are on the classpath of this project.
 # (This does not copy the frameworks, it just links to them so it is very fast)
 
+
+
+
+
+#WEBOBJECTS_ROOT_IN_FRAMEWORKS_REPOSITORY = /Users/Shared/Jenkins/Home/WOFrameworksRepository/WebObjects/5.4.3/System
+#WO_JAVA_APPS_ROOT_IN_FRAMEWORKS_REPOSITORY = /Users/Shared/Jenkins/Home/WOFrameworksRepository/WebObjects/5.4.3/System/Library/WebObjects/JavaApplications
+#WOTASKD_IN_FRAMEWORKS_REPOSITORY = /Users/Shared/Jenkins/Home/WOFrameworksRepository/WebObjects/5.4.3/System/Library/WebObjects/JavaApplications/wotaskd.woa
+#WEBOBJECTS_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY = /Users/Shared/Jenkins/Home/WOFrameworksRepository/WebObjects/5.4.3/System/Library/Frameworks
+#WONDER_ROOT_IN_FRAMEWORKS_REPOSITORY = /Users/Shared/Jenkins/Home/WOFrameworksRepository/ProjectWOnder/integration/5.4.3
+#WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY = /Users/Shared/Jenkins/Home/WOFrameworksRepository/ProjectWOnder/integration/5.4.3/Library/Frameworks
+#WO_SYSTEM_ROOT_FOR_THIS_BUILD = /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root/System
+#WO_SYSTEM_FRAMEWORKS_FOR_THIS_BUILD = /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root/System/Library/Frameworks
+#WO_JAVA_APPS_ROOT_FOR_THIS_BUILD = /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root/System/Library/WebObjects/JavaApplications
+#WO_BOOTSTRAP_JAR_FOR_THIS_BUILD = /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root/System/Library/WebObjects/JavaApplications/wotaskd.woa/WOBootstrap.jar
+#WO_LOCAL_ROOT_FOR_THIS_BUILD = /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root
+#WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD = /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root/Library/Frameworks
+#WO_EXTENSIONS_FOR_THIS_BUILD = /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root/Library/WebObjects/Extensions
+#WO_APPS_ROOT_FOR_THIS_BUILD = /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root/Library/WebObjects/Applications
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Setup Directories for System and Local Frameworks
-mkdir -p ${WO_SYSTEM_FRAMEWORKS_FOR_THIS_BUILD}
+##### /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root/System/Library/Frameworks
+#mkdir -p ${WO_SYSTEM_FRAMEWORKS_FOR_THIS_BUILD}
+
+ln -sfn ${WEBOBJECTS_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY} ${WO_SYSTEM_FRAMEWORKS_FOR_THIS_BUILD}
+
+
+
+#WEBOBJECTS_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY = /Users/Shared/Jenkins/Home/WOFrameworksRepository/WebObjects/5.4.3/System/Library/Frameworks
+
+
+
+##### /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root/Library/Frameworks
 mkdir -p ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}
+##### /Users/Shared/Jenkins/Home/jobs/Install_WOdka/workspace/Root/Library/WebObjects/Extensions
 mkdir -p ${WO_EXTENSIONS_FOR_THIS_BUILD}
+
+
+
+
+
+
+
+
+
+
 
 # Get all the Projects that have been checked out as part of this job
 PROJECTS=`ls ${WORKSPACE}/Projects/`
-
-# Step through them to get the list of WO frameworks on their Classpath.
-for PROJECT in $PROJECTS; do
-	if [ "${PROJECT}" == "${PROJECT_NAME}" ]; then
-		echo " "
-		echo "Parsing ${WORKSPACE}/Projects/**/.classpath to determine WOFramework dependencies"
-		FRAMEWORKS=`cat ${WORKSPACE}/Projects/**/.classpath | grep WOFramework/ | sed 's#.*WOFramework/\([^"]*\)"/>#\1#'`
-		echo "WOFrameworks required by ${PROJECT} :"
-		echo "$FRAMEWORKS"
-		echo "Find them and create Symbolic Links to them (much faster than copying!)"
-		# Step through each WOFramework in the .classpath and try to find it
-		# in one of the following places:
-		#	1) In the projects checked out by this project in the ${WORKSPACE}/Projects directory
-		#	2) WebObjects Frameworks in the WOFrameworksRepository
-		#	3) Project WOnder Frameworks in the WOFrameworksRepository
-		#	4) Other Jenkins jobs with matching names - very limiting.
-		#		(TODO: This should look for other jobs that have this job's name
-		#			   in the <childProjects> tag of their config.xml file.)
-		for FRAMEWORK in $FRAMEWORKS; do
-			FRAMEWORK_LINK_SUCCESSFUL="false"
-			echo " "
-			echo "Look For: ${FRAMEWORK}"
-			FRAMEWORK_IN_SAME_JOB_PROJECT="${WORKSPACE}/Projects/${FRAMEWORK}"
-			FRAMEWORK_NAME_IN_SAME_JOB_INSTALL="${WORKSPACE}/Projects/${FRAMEWORK}/dist/${FRAMEWORK}.framework"
-			FRAMEWORK_NAME_IN_WEBOBJECTS_INSTALL="${WEBOBJECTS_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/${FRAMEWORK}.framework"
-			FRAMEWORK_NAME_IN_WONDER_INSTALL="${WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/${FRAMEWORK}.framework"
-			JENKINS_FRAMEWORK_JOB_DIST="${JOB_ROOT}/${FRAMEWORK}${BRANCH_TAG_DELIMITER}${PROJECT_BRANCH_TAG}/lastSuccessful/archive/Projects/${FRAMEWORK}/dist"
-			FRAMEWORK_ARTIFACT_PATH_IN_JENKINS_JOB="${JENKINS_FRAMEWORK_JOB_DIST}/${FRAMEWORK}.tar.gz"
-
-			# Check to see if the Framework is being built as
-			# part of this job. Of course, this job will need
-			# to ensure that it is building things in the right
-			# sequence, i.e., dependency order (frameworks
-			# before Applications).
-			if [ -e "${FRAMEWORK_IN_SAME_JOB_PROJECT}" ]; then
-				echo "    Found in this job's Workspace/Projects directory. Assuming it will be built and installed in: ${FRAMEWORK_NAME_IN_SAME_JOB_INSTALL}"
-				if [ ! -e "${FRAMEWORK_NAME_IN_SAME_JOB_INSTALL}" ]; then
-					echo "            ${FRAMEWORK_NAME_IN_SAME_JOB_INSTALL} doesn't yet exist, make it and link to it."
-					echo "            mkdir -p ${FRAMEWORK_NAME_IN_SAME_JOB_INSTALL}"
-					mkdir -p ${FRAMEWORK_NAME_IN_SAME_JOB_INSTALL}
-				fi
-				echo "        Linking: ln -sfn ${FRAMEWORK_NAME_IN_SAME_JOB_INSTALL}"
-				echo "                         ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}"
-				(ln -sfn ${FRAMEWORK_NAME_IN_SAME_JOB_INSTALL} ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD})
-				FRAMEWORK_LINK_SUCCESSFUL="true"
-			else
-				echo "    Not found in this job's Workspace/Projects directory: ${FRAMEWORK_IN_SAME_JOB_PROJECT}"
-
-				# Check to see if the Framework is a System framework
-				# (WebObjects core frameworks) by checking for it in the
-				# System frameworks path of the repository
-				if [ -e "${FRAMEWORK_NAME_IN_WEBOBJECTS_INSTALL}" ]; then
-					echo "    Found in WebObjects."
-					echo "        Linking: ln -sfn ${FRAMEWORK_NAME_IN_WEBOBJECTS_INSTALL}"
-					echo "                         ${WO_SYSTEM_FRAMEWORKS_FOR_THIS_BUILD}"
-					(ln -sfn ${FRAMEWORK_NAME_IN_WEBOBJECTS_INSTALL} ${WO_SYSTEM_FRAMEWORKS_FOR_THIS_BUILD})
-					FRAMEWORK_LINK_SUCCESSFUL="true"
-				else
-					echo "    Not found in WebObjects: ${FRAMEWORK_NAME_IN_WEBOBJECTS_INSTALL}"
-				fi
-
-				# Check to see if the Framework is a WOnder framework by
-				# checking for it in the WOnder frameworks path of the
-				# repository NOTE: The same framework name can exist in both
-				# (JavaWOExtensions.framework, for example) so this is not
-				# either/or situation and we must link to both. The Local
-				# version will be used automatically by WO if it exists.
-				if [ -e "${FRAMEWORK_NAME_IN_WONDER_INSTALL}" ]; then
-					echo "    Found in Project WOnder."
-					echo "        Linking: ln -sfn ${FRAMEWORK_NAME_IN_WONDER_INSTALL}"
-					echo "                         ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}"
-					(ln -sfn ${FRAMEWORK_NAME_IN_WONDER_INSTALL} ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD})
-					FRAMEWORK_LINK_SUCCESSFUL="true"
-				else
-					echo "    Not found in Project WOnder: ${FRAMEWORK_NAME_IN_WONDER_INSTALL}"
-				fi
-
-				# Check to see if the Framework is a Jenkins-Built framework
-				# by checking for it in the Jobs directory for properly
-				# named Hudson jobs. NOTE: We may create and/or build our
-				# own version of a Wonder or System framework, so we need to
-				# check for that last too, so this Can't be an elseif, it
-				# must be an if.
-				if [ -e "${FRAMEWORK_ARTIFACT_PATH_IN_JENKINS_JOB}" ]; then
-					echo "    Found in Jenkins Job: ${JENKINS_URL}job/${FRAMEWORK}/lastSuccessfulBuild/artifact/Projects/${FRAMEWORK}/dist"
-					echo "        ${FRAMEWORK_ARTIFACT_PATH_IN_JENKINS_JOB}"
-					if [ -e "${JENKINS_FRAMEWORK_JOB_DIST}/${FRAMEWORK}.framework" ]; then
-						echo "    ${FRAMEWORK}.tar.gz has already been extracted."
-					else
-						echo "    ${FRAMEWORK}.tar.gz has not been extracted. Extracting now."
-						echo "        tar -C ${JENKINS_FRAMEWORK_JOB_DIST}"
-						echo "            -xf ${FRAMEWORK_ARTIFACT_PATH_IN_JENKINS_JOB}"
-						tar -C ${JENKINS_FRAMEWORK_JOB_DIST} -xf ${FRAMEWORK_ARTIFACT_PATH_IN_JENKINS_JOB}
-					fi
-					echo "        Linking: ln -sfn ${JENKINS_FRAMEWORK_JOB_DIST}/${FRAMEWORK}.framework"
-					echo "                         ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}"
-					(ln -sfn ${JENKINS_FRAMEWORK_JOB_DIST}/${FRAMEWORK}.framework ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD})
-					FRAMEWORK_LINK_SUCCESSFUL="true"
-				else
-					echo "    Not found in other build job: ${FRAMEWORK_ARTIFACT_PATH_IN_JENKINS_JOB}"
-				fi
-			fi
-
-			if [ "${FRAMEWORK_LINK_SUCCESSFUL}" = "false" ]; then
-				echo "Could not sucessfully link to ${FRAMEWORK}.framework."
-				echo "    ${FRAMEWORK}.framework must be available at one of the following locations:"
-				echo "        1) As another project checked out by this job into the workspace Projects directory: ${FRAMEWORK_IN_SAME_JOB_PROJECT}"
-				echo "           and built (most likely by its own ant task) into: ${FRAMEWORK_NAME_IN_SAME_JOB_INSTALL}"
-				echo "        2) In the WebObjects Frameworks at: ${FRAMEWORK_NAME_IN_WEBOBJECTS_INSTALL}"
-				echo "        3) In the Wonder Frameworks at: ${FRAMEWORK_NAME_IN_WONDER_INSTALL}"
-				echo "        4) As a Jenkins job that has at least one successful Build and"
-				echo "           an artifact path of *exactly*: ${FRAMEWORK_ARTIFACT_PATH_IN_JENKINS_JOB}"
-				exit 1
-			fi
-		done
-	fi
-done
 
 echo "Link to ${WOPROJECT} so Ant can build the WO project."
 mkdir -p ${ROOT}/lib
