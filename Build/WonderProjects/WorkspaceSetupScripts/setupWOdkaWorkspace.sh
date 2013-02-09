@@ -149,16 +149,21 @@ mkdir -p ${WODKA_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}
 
 # Link WOdka Frameworks to current Build Frameworks
 ln -sfn ${WODKA_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY} ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}
-
-
-
-
-
-
 #ln -sfn ${WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY} ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}
 
-# Create WOdka Folder
-#ln -sfn ${WODKA_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY} ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}
+# Get all the Projects that have been checked out as part of this job
+PROJECTS=`ls ${WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/`
+
+# Step through them to get the list of WO frameworks on their Classpath.
+for PROJECT in $PROJECTS; do
+	echo "processing ${PROJECT} :"
+
+
+
+
+
+
+done
 
 
 
