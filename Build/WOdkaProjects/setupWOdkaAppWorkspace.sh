@@ -145,19 +145,7 @@ ln -sfn ${WEBOBJECTS_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY} ${WO_SYSTEM_FRAMEWORKS
 mkdir -p ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}
 
 # Get all the Projects that have been checked out as part of this job
-PROJECTS=`ls ${WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/`
-
-# Step through all wonder Frameworks and create a link
-for PROJECT in $PROJECTS; do
-	echo "processing ${PROJECT} :"
-	echo "        Linking: ln -sfn ${WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/${PROJECT}"
-	echo "                         ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}"
-	#ln -sfn ${WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/${PROJECT} ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}
-done
-
-# Get all the Projects that have been checked out as part of this job
 PROJECTS=`ls ${WODKA_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/`
-
 
 # Step through all wodka Frameworks and create a link
 for PROJECT in $PROJECTS; do
@@ -167,12 +155,15 @@ for PROJECT in $PROJECTS; do
 	ln -sfn ${WODKA_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/${PROJECT} ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}
 done
 
+# Create Template Folder (WOFrameworksRepository/WOdka/Library/Templates)
+echo "create and copy Compiler Templates for App's"
+WONDEREXTENSIONSLABORATORY="WonderExtensionLaboratory"
 
 
 
-
-
-
+mkdir -p ${WORKSPACE}/${WONDEREXTENSIONSLABORATORY}/WOdkaTemplates/Templates
+cp ${WODKA_ROOT_IN_FRAMEWORKS_REPOSITORY}/Library/Templates/common-framework.xml ${WORKSPACE}/${WONDEREXTENSIONSLABORATORY}/WOdkaTemplates/Templates/common-framework.xml 
+cp ${WODKA_ROOT_IN_FRAMEWORKS_REPOSITORY}/Library/Templates/common-app.xml ${WORKSPACE}/${WONDEREXTENSIONSLABORATORY}/WOdkaTemplates/Templates/common-app.xml 
 
 
 
