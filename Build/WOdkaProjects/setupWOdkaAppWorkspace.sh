@@ -152,7 +152,7 @@ for PROJECT in $PROJECTS; do
 	echo "processing ${PROJECT} :"
 	echo "        Linking: ln -sfn ${WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/${PROJECT}"
 	echo "                         ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}"
-	ln -sfn ${WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/${PROJECT} ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}
+	#ln -sfn ${WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/${PROJECT} ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}
 done
 
 # Get all the Projects that have been checked out as part of this job
@@ -164,11 +164,7 @@ for PROJECT in $PROJECTS; do
 	echo "processing ${PROJECT} :"
 	echo "        Linking: ln -sfn ${WODKA_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/${PROJECT}"
 	echo "                         ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}"
-	
-	if [ ${PROJECT} != -d ]; then
-		echo " is a dir ${PROJECT}"
-	#ln -sfn ${WODKA_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/${PROJECT} ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}
-	fi
+	ln -sfn ${WODKA_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/${PROJECT} ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}
 done
 
 
