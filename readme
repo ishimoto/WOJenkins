@@ -1,4 +1,4 @@
-This repository contains shell scripts for helping setup Jenkins (and probably Hudson, too) to build and deploy WebObjects applications.
+This repository contains shell scripts for helping setup Jenkins to build and deploy WebObjects applications.
 
 When combined with the corresponding Jenkins jobs (Jobs available in seperate repositories)* these scripts can:
 
