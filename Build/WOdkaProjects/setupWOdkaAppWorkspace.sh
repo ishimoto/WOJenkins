@@ -3,6 +3,7 @@ ROOT="$WORKSPACE/Root"
 WOPROJECT="woproject.jar"
 JOB_ROOT="${WORKSPACE}/../.."
 FRAMEWORKS_REPOSITORY="${JENKINS_HOME}/WOFrameworksRepository"
+WONDEREXTENSIONSLABORATORY="WonderExtensionLaboratory"
 
 echo "Project Name: WOdka LAB Framework"
 
@@ -135,7 +136,7 @@ mkdir -p ${WO_EXTENSIONS_FOR_THIS_BUILD}
 
 echo "Link to ${WOPROJECT} so Ant can build the WO project."
 mkdir -p ${ROOT}/lib
-ln -sf ${FRAMEWORKS_REPOSITORY}/WOProject/${WOPROJECT} ${ROOT}/lib/${WOPROJECT}
+cp ${FRAMEWORKS_REPOSITORY}/WOProject/${WOPROJECT} ${ROOT}/lib/${WOPROJECT}
 
 # Setup Directories for System
 mkdir -p "${WO_SYSTEM_ROOT_FOR_THIS_BUILD}/Library"
@@ -157,16 +158,9 @@ done
 
 # Create Template Folder (WOFrameworksRepository/WOdka/Library/Templates)
 echo "create and copy Compiler Templates for App's"
-WONDEREXTENSIONSLABORATORY="WonderExtensionLaboratory"
-
-
-
 mkdir -p ${WORKSPACE}/${WONDEREXTENSIONSLABORATORY}/WOdkaTemplates/Templates
 cp ${WODKA_ROOT_IN_FRAMEWORKS_REPOSITORY}/Library/Templates/common-framework.xml ${WORKSPACE}/${WONDEREXTENSIONSLABORATORY}/WOdkaTemplates/Templates/common-framework.xml 
 cp ${WODKA_ROOT_IN_FRAMEWORKS_REPOSITORY}/Library/Templates/common-app.xml ${WORKSPACE}/${WONDEREXTENSIONSLABORATORY}/WOdkaTemplates/Templates/common-app.xml 
-
-
-
 
 echo "Setup ${ROOT}/jenkins.build.properties for Ant to use for building"
 cat > ${ROOT}/jenkins.build.properties << END
