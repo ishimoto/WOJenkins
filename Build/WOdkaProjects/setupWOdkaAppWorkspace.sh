@@ -144,32 +144,42 @@ ln -sfn ${WEBOBJECTS_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY} ${WO_SYSTEM_FRAMEWORKS
 # Setup Directories for Local Frameworks
 mkdir -p ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}
 
-
-
-
-####mkdir -p "${WO_LOCAL_ROOT_FOR_THIS_BUILD}/Library"
-
-# Create WOdka Folder (Root/Library/Frameworks)
-
-
-
-
-
-
-# Link WOdka Frameworks to current Build Frameworks
-#ln -sfn ${WODKA_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY} ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}
-#ln -sfn ${WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY} ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}
-
 # Get all the Projects that have been checked out as part of this job
 PROJECTS=`ls ${WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/`
 
-# Step through all wonder Frameworks and create a link to wodka
+# Step through all wonder Frameworks and create a link
 for PROJECT in $PROJECTS; do
 	echo "processing ${PROJECT} :"
 	echo "        Linking: ln -sfn ${WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/${PROJECT}"
-	echo "                         ${WODKA_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}"
+	echo "                         ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}"
 	ln -sfn ${WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/${PROJECT} ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}
 done
+
+# Get all the Projects that have been checked out as part of this job
+PROJECTS=`ls ${WODKA_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/`
+
+
+# Step through all wodka Frameworks and create a link
+for PROJECT in $PROJECTS; do
+	echo "processing ${PROJECT} :"
+	echo "        Linking: ln -sfn ${WODKA_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/${PROJECT}"
+	echo "                         ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}"
+	
+	if [ ${PROJECT} != -d ]; then
+		echo " is a dir ${PROJECT}"
+	#ln -sfn ${WODKA_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}/${PROJECT} ${WO_LOCAL_FRAMEWORKS_FOR_THIS_BUILD}
+	fi
+done
+
+
+
+
+
+
+
+
+
+
 
 echo "Setup ${ROOT}/jenkins.build.properties for Ant to use for building"
 cat > ${ROOT}/jenkins.build.properties << END
