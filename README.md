@@ -8,8 +8,8 @@ When combined with the corresponding Jenkins jobs (Jobs available in seperate re
 
 2. **Project WOnder**:<br />
   a) Clone Project WOnder from the github.com repository<br />
-  b) Build 'integration'<br />
-  c) Install in JENKINS_HOME/WOFrameworksRepository/ProjectWOnder/integration<br />
+  b) Build 'master'<br />
+  c) Install in JENKINS_HOME/WOFrameworksRepository/ProjectWOnder/master<br />
 
 3. **WOdka**:<br />
   a) Clone WOdka from the github.com repository<br />
@@ -18,7 +18,7 @@ When combined with the corresponding Jenkins jobs (Jobs available in seperate re
 
 3. Add any frameworks required by your project (based on the .classpath file) into your project's workspace (using symbolic links)<br />
   a) WebObjects 5.4.3 frameworks<br />
-  b) Project WOnder 'integration' frameworks<br />
+  b) Project WOnder 'master' frameworks<br />
   c) WOdka frameworks<br />
 
 4. Build your WebObjects Framework or Application
@@ -35,5 +35,5 @@ following Repo you will need :<br /><br />
 #####This script is a slightly different version, please use the wonder version.
 
 * remove of WO 5.3.3 support
-* wonder is default to 'integration' repo
+* wonder is default to 'master' repo
 * support for WOdka APP installations
