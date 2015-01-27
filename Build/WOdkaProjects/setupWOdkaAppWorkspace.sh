@@ -1,19 +1,11 @@
 #!/bin/bash
 ROOT="$WORKSPACE/Root"
-WOPROJECT="woproject.jar"
+TB_PROJECT="woproject.jar"
 JOB_ROOT="${WORKSPACE}/../.."
-FRAMEWORKS_REPOSITORY="${JENKINS_HOME}/WOFrameworksRepository"
+FRAMEWORKS_REPOSITORY="${JENKINS_HOME}/TreasureBoatFrameworksRepository"
 WONDEREXTENSIONSLABORATORY="WonderExtensionLaboratory"
 
 echo "Project Name: WOdka LAB Framework"
-
-if [ "$PROJECT_BRANCHES_TAGS_TRUNK" == "trunk" ]; then
-	BRANCH_TAG_DELIMITER=""
-elif [ "$PROJECT_BRANCHES_TAGS_TRUNK" == "" ]; then
-	BRANCH_TAG_DELIMITER=""
-else
-	BRANCH_TAG_DELIMITER="_"
-fi
 
 #
 # Configure the environment based on the platform information.
@@ -78,9 +70,6 @@ echo "       System Path Prefix: ${SYSTEM_PATH_PREFIX}"
 			  WOTASKD_IN_FRAMEWORKS_REPOSITORY="${WO_JAVA_APPS_ROOT_IN_FRAMEWORKS_REPOSITORY}/wotaskd.woa"
 WEBOBJECTS_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY="${WEBOBJECTS_ROOT_IN_FRAMEWORKS_REPOSITORY}/Library/Frameworks"
 
-		  WONDER_ROOT_IN_FRAMEWORKS_REPOSITORY="${FRAMEWORKS_REPOSITORY}/ProjectWOnder/master/5.4.3"
-	WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY="${WONDER_ROOT_IN_FRAMEWORKS_REPOSITORY}/Library/Frameworks"
-
 		   WODKA_ROOT_IN_FRAMEWORKS_REPOSITORY="${FRAMEWORKS_REPOSITORY}/WOdka"
 	 WODKA_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY="${WODKA_ROOT_IN_FRAMEWORKS_REPOSITORY}/Library/Frameworks"
 
@@ -119,24 +108,14 @@ else
 	exit 1
 fi
 
-# Verify that the requested version of Wonder has been built and installed in the FRAMEWORKS_REPOSITORY
-echo "Look for: ${WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}"
-if [ -e "${WONDER_FRAMEWORKS_IN_FRAMEWORKS_REPOSITORY}" ]; then
-	echo "    Project WOnder Frameworks Found."
-else
-	echo "    Project WOnder Frameworks not found! You must build Wonder with"
-	echo "    WONDER_REVISION = 'master' and WO_VERSION = '5.4.3'"
-	exit 1
-fi
-
 # Link to the Frameworks that are on the classpath of this project.
 # (This does not copy the frameworks, it just links to them so it is very fast)
 
 mkdir -p ${WO_EXTENSIONS_FOR_THIS_BUILD}
 
-echo "Link to ${WOPROJECT} so Ant can build the WO project."
+echo "Link to ${TB_PROJECT} so Ant can build the WO project."
 mkdir -p ${ROOT}/lib
-cp ${FRAMEWORKS_REPOSITORY}/WOProject/${WOPROJECT} ${ROOT}/lib/${WOPROJECT}
+cp ${FRAMEWORKS_REPOSITORY}/WOProject/${TB_PROJECT} ${ROOT}/lib/${TB_PROJECT}
 
 # Setup Directories for System
 mkdir -p "${WO_SYSTEM_ROOT_FOR_THIS_BUILD}/Library"
@@ -161,7 +140,7 @@ echo "create and copy Compiler Templates for App's"
 mkdir -p ${WORKSPACE}/${WONDEREXTENSIONSLABORATORY}/WOdkaTemplates/Templates
 cp ${WODKA_ROOT_IN_FRAMEWORKS_REPOSITORY}/Library/Templates/common-framework.xml ${WORKSPACE}/${WONDEREXTENSIONSLABORATORY}/WOdkaTemplates/Templates/common-framework.xml 
 cp ${WODKA_ROOT_IN_FRAMEWORKS_REPOSITORY}/Library/Templates/common-app.xml ${WORKSPACE}/${WONDEREXTENSIONSLABORATORY}/WOdkaTemplates/Templates/common-app.xml 
-cp ${WODKA_ROOT_IN_FRAMEWORKS_REPOSITORY}/Library/Templates/${WOPROJECT} ${WORKSPACE}/${WONDEREXTENSIONSLABORATORY}/WOdkaTemplates/Templates/${WOPROJECT} 
+cp ${WODKA_ROOT_IN_FRAMEWORKS_REPOSITORY}/Library/Templates/${TB_PROJECT} ${WORKSPACE}/${WONDEREXTENSIONSLABORATORY}/WOdkaTemplates/Templates/${TB_PROJECT} 
 
 echo "Setup ${ROOT}/jenkins.build.properties for Ant to use for building"
 cat > ${ROOT}/jenkins.build.properties << END
