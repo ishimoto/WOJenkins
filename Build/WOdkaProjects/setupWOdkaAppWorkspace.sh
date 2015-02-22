@@ -115,7 +115,7 @@ mkdir -p ${WO_EXTENSIONS_FOR_THIS_BUILD}
 
 echo "Link to ${TB_PROJECT} so Ant can build the WO project."
 mkdir -p ${ROOT}/lib
-cp ${FRAMEWORKS_REPOSITORY}/WOProject/${TB_PROJECT} ${ROOT}/lib/${TB_PROJECT}
+cp ${FRAMEWORKS_REPOSITORY}/TBProject/${TB_PROJECT} ${ROOT}/lib/${TB_PROJECT}
 
 # Setup Directories for System
 mkdir -p "${WO_SYSTEM_ROOT_FOR_THIS_BUILD}/Library"
